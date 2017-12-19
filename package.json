@@ -1,0 +1,20 @@
+{
+  "name": "arno",
+  "version": "1.0.0",
+  "description": "Private discord memer",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": "Heikki Simojoki",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.0",
+    "discord.js": "^11.2.1",
+    "mongodb": "^3.0.0-rc0",
+    "node-opus": "^0.2.7",
+    "prism-media": "github:hydrabolt/prism-media",
+    "sigint": "^1.0.0",
+    "ytdl-core": "^0.18.3"
+  }
+}

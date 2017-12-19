@@ -1,0 +1,12 @@
+**Commands**
+*!play url times seek*: Adds an youtube video to the queue
+    *url*: The link to the video
+    *times*: How many times the video should be played (optional, default 1)
+    *seek*: Where the video should be started, in seconds from start(optional, default 1)
+
+*!volume x*: Changes volume
+    *x*: New volume, can be a number from 0 to 200
+
+*!skip*: Skips the current video
+
+*!stfu*: Shuts the bot the fuck up, also empties the queue
