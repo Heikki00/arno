@@ -32,7 +32,7 @@ client.on('ready', () => {
                 console.log("State changed!")
                 websocket.broadcastState();         
             });
-            websocket.init(player, kill);
+            websocket.init(player, killBot);
           })
       }
   })
