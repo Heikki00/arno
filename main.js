@@ -1,4 +1,3 @@
-const sigint = require('sigint').create();
 const fs = require("fs");
 const Discord = require("discord.js");
 const player = require("./player.js")
@@ -10,33 +9,30 @@ const config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"))
 var helpfile = fs.readFileSync("./help.txt").toString("utf-8")
 
 
-sigint.on('signal', function(source, count) {
-    if (source === 'keyboard' && count === 1) {
-        console.log('Quitting, please feel free to press Ctrl+C  forcefully slaughter me!');
-        client.destroy().then(() => {
-            process.exit()
-        })
-    } else {
-        process.exit();
-    }
-});
+
+function killBot(){
+    console.log("Killing the bot!")
+    client.destroy().then(() => {
+        process.exit()
+    })
+}
+
 
 var voiceConnection = null;
 
 
 client.on('ready', () => {
-    
+    console.log("Logged in, starting to init shit...")
   client.channels.forEach((channel) => {
       if(channel.type === "voice" && channel.id === config.vchannel){
           channel.join().then((connection) => {
             voiceConnection = connection;
 
             player.init(connection, () => {
-                websocket.broadcastState();
                 console.log("State changed!")
-            
+                websocket.broadcastState();         
             });
-            websocket.init(player);
+            websocket.init(player, kill);
           })
       }
   })
@@ -47,7 +43,8 @@ client.on('message', msg => {
     if(msg.channel.id === config.commandChannel){
         let words = msg.toString().split(" ").filter((s) => s);
         
-        console.log("Recieved command: " + words);
+        console.log("Recieved message on command channel: " + words);
+        if(words.length == 0) return;
         if(words[0].startsWith("!")) msg.delete()
 
         if(words[0] === "!play"){

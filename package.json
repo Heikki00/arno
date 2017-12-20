@@ -14,7 +14,6 @@
     "mongodb": "^3.0.0-rc0",
     "node-opus": "^0.2.7",
     "prism-media": "github:hydrabolt/prism-media",
-    "sigint": "^1.0.0",
     "ytdl-core": "^0.18.3"
   }
 }

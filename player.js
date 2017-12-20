@@ -27,6 +27,7 @@ var paused = false;
 var stateChanged = null;
 
 exports.getState = () => {
+    console.log("PLAYER: Getting the state...")
     let state =  {
         queue: queue,
         volume: options.volume,
@@ -43,15 +44,18 @@ exports.getState = () => {
 
 
 exports.init = (voiceConnection, stateChangedd) => {
+    console.log("PLAYER: initing...")
     connection = voiceConnection;
     stateChanged = stateChangedd;
 }
 
 exports.kill = () => {
+    console.log("PLAYER: killing...")
     connection = null;
 }
 
 exports.pause = (state) => {
+    console.log("PLAYER: pausing: " + state)
     if (!connection.dispatcher || paused === state) return;
     if (paused) connection.dispatcher.resume();
     else connection.dispatcher.pause();
@@ -62,7 +66,7 @@ exports.pause = (state) => {
 exports.isPaused = () => paused
 
 exports.setVolume = (volume) => {
-    console.log("Volume set to " + volume)
+    console.log("PLAYER: Volume set to " + volume)
     options.volume = volume;
     if (connection.dispatcher)
         connection.dispatcher.setVolumeLogarithmic(volume);
@@ -73,7 +77,7 @@ exports.setVolume = (volume) => {
 
 function startNext() {
 
-    console.log("Starting " + queue[0])
+    console.log("PLAYER: Starting " + JSON.stringify(queue[0]))
     current = queue[0];
     if (current.loops > 0) current.loops = current.loops - 1;
     else queue.shift()
@@ -87,6 +91,7 @@ function startNext() {
 
     connection.dispatcher.on("end", (reason) => {
         setTimeout(() => {
+            console.log("PLAYER: Streamendcallbackthing")
             current = null;
             if (queue.length != 0) {
                 startNext()
@@ -99,7 +104,7 @@ function startNext() {
 }
 
 exports.skip = () => {
-    console.log("Skipping")
+    console.log("PLAYER: Skipping")
     if (connection.dispatcher)
         connection.dispatcher.end("skip")
 
@@ -110,6 +115,7 @@ exports.skip = () => {
 exports.addToQueue = (link, seek, loops) => {
     seek = seek === undefined ? 0 : seek;
     loops = loops === undefined ? 0 : loops;
+    console.log("PLAYER: requesting yt info for " + link)
     ytdl.getInfo(link, (err, info) => {
 
         
@@ -118,7 +124,7 @@ exports.addToQueue = (link, seek, loops) => {
             startNext()
         }
         stateChanged()
-        console.log("Added " + info.title + " to queue!")
+        console.log("PLAYER: Added " + info.title + " to queue!")
     })
 
 }
@@ -126,7 +132,7 @@ exports.addToQueue = (link, seek, loops) => {
 exports.getQueue = () => queue
 
 exports.stfu = () => {
-    console.log("Shutting the fuck up")
+    console.log("PLAYER: Shutting the fuck up")
     queue = []
     if (connection.dispatcher)
         connection.dispatcher.end("stfu")
