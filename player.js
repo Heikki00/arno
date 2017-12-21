@@ -78,11 +78,14 @@ exports.setVolume = (volume) => {
 function startNext() {
 
     console.log("PLAYER: Starting " + JSON.stringify(queue[0]))
-    current = queue[0];
-    if (current.loops > 0) current.loops = current.loops - 1;
-    else queue.shift()
+    
 
-
+    if(current && current.loops > 0){
+        current.loops = current.loops - 1;
+    }
+    else{
+        current = queue.shift()
+    }
 
     const stream = ytdl(current.link, ytdlOptions);
 
@@ -92,11 +95,13 @@ function startNext() {
     connection.dispatcher.on("end", (reason) => {
         setTimeout(() => {
             console.log("PLAYER: Streamendcallbackthing")
-            current = null;
             if (queue.length != 0) {
                 startNext()
             }
-            else stateChanged()
+            else{
+                current = null;
+                stateChanged()
+            }
         }, 200)
     })
 
